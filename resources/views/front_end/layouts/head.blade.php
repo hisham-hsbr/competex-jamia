@@ -1,44 +1,25 @@
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-
+<meta http-equiv="x-ua-compatible" content="ie=edge">
 <title>{{ $settings['app_name'] }} {{ $settings['message_home_toolbar'] }}</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Favicon -->
+<link rel="shortcut icon" type="image/x-icon" href="./img/favicon.png') }}">
 
-<meta content="" name="description">
-<meta content="" name="keywords">
-
-<!-- Favicons -->
-<x-app.application-favicon />
-
-<!-- Font Awesome -->
-
-<link rel="stylesheet" href="{{ asset('back_end_links/adminLinks/plugins/fontawesome-free/css/all.min.css') }}">
-
-<!-- Google Fonts -->
-<link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet">
-
-<!-- Vendor CSS Files -->
-<link href="{{ asset('front_end_links/selecao/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-<link href="{{ asset('front_end_links/selecao/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-<!-- Template Main CSS File -->
-<link href="{{ asset('front_end_links/selecao/assets/css/style.css') }}" rel="stylesheet">
-
-{{-- bootstrap --}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-<!-- bootstrap -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/animate.min.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/meanmenu.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/magnific-popup.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/et-line-icon.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/reset.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/ionicons.min.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/material-design-iconic-font.min.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('front_end_links/eduhome/css/responsive.css') }}">
+<script src="{{ asset('front_end_links/eduhome/js/vendor/modernizr-3.11.2.min.js') }}"></script>
 
 @section('head-links')
 @show
