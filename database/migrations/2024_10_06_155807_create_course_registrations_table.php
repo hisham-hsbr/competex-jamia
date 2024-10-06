@@ -11,23 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('course_registrations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->date('dob')->nullable();
+            $table->string('email')->unique();
             $table->string('phone1')->nullable();
             $table->string('phone2')->nullable();
-            $table->string('gender')->nullable();
-            $table->boolean('personal_settings')->default(0);
-            $table->text('settings');
-            $table->string('avatar')->nullable();
-
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('address')->nullable();
+            $table->string('description')->nullable();
+            $table->string('edit_description')->nullable();
+            $table->boolean(column: 'gender')->nullable();
             $table->boolean('status')->nullable();
-
 
             // default
             $table->unsignedBigInteger('created_by')->unsigned()->index()->nullable();
@@ -36,8 +32,6 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->unsigned()->index()->nullable();
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
 
-
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -47,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('course_registrations');
     }
 };

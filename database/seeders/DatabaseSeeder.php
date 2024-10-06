@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminUserSeeder::class);
         $this->call(TimeZoneSeeder::class);
         $this->call(AddressSeeder::class);
+        $this->call(CourseSeeder::class);
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Competex\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Image;
@@ -47,15 +48,26 @@ class FrontendDashboardController extends Controller
     }
     public function index()
     {
-        $images = Image::all();
-        $images_portfolio = Image::all()
-            ->where('type', 'portfolio')
-            ->groupBy('group');
-        return view('front_end.welcome', compact('images', 'images_portfolio'))->with('i');
+        $courses = Course::all();
+        return view('front_end.welcome')->with(
+            [
+                // 'headName' => $this->headName,
+                // 'routeName' => $this->routeName,
+                // 'permissionName' => $this->permissionName,
+                'courses' => $courses,
+            ]
+        );
     }
-    public function detailsRegistration()
+    public function courseRegistration($id)
     {
-
-        return view('front_end.details-registration')->with('i');
+        $course = Course::find(decrypt($id));
+        return view('front_end.course-registration')->with(
+            [
+                // 'headName' => $this->headName,
+                // 'routeName' => $this->routeName,
+                // 'permissionName' => $this->permissionName,
+                'course' => $course,
+            ]
+        );
     }
 }
