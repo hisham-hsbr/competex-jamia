@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="col-md-4 col-sm-4">
-                <div class="header-top-right text-md-end text-center">
+                <div class="text-center header-top-right text-md-end">
                     <ul>
                         <li><a href="login.html">login</a></li>
                         <li><a href="signup.html">signup</a></li>
@@ -17,7 +17,7 @@
         </div>
     </div>
 </div>
-<div class="header-area header-sticky">
+<div class="header-area two header-sticky">
     {{-- <div class="header-area two header-sticky"> --}}
     <div class="container">
         <div class="row">
