@@ -10,8 +10,8 @@
 @endsection
 
 @section('headLinks')
-    <x-links.header-links-select-two />
-    <x-links.header-link-dual-list-box />
+    <x-back-end.plugins.select-two-head />
+    <x-back-end.plugins.dual-list-box-head />
 
 @endsection
 
@@ -33,21 +33,21 @@
                     <div class="card-body">
                         <div class="row">
                             @if (Auth::user()->avatar)
-                                <x-user.user-profile-image class="user-image img-circle elevation-2" width="135" />
+                                <x-app.user-profile-image class="user-image img-circle elevation-2" width="135" />
                                 <form method="post" action="{{ route('profile.avatar-delete') }}">
                                     @csrf
                                     @method('patch')
-                                    <button class="btn btn-secondary btn-sm me-1 mb-1 mt-1">Remove</button>
+                                    <button class="mt-1 mb-1 btn btn-secondary btn-sm me-1">Remove</button>
                                 </form>
                             @else
-                                <x-user.user-profile-image class="user-image img-circle elevation-2" width="135" />
+                                <x-app.user-profile-image class="user-image img-circle elevation-2" width="135" />
                                 {{-- <img width="70" height="70" class="rounded-circle"
                                             src="{{ '/storage/avatars/avatar.png' }}" alt="user avatar"> --}}
                             @endif
                             <form method="post" action="{{ route('profile.avatar-update') }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('patch')
-                                <div class="col-12 mb-3">
+                                <div class="mb-3 col-12">
 
                                     <label class="form-label" for="customFile">Select your Avatar</label>
 
@@ -113,11 +113,11 @@
                                             Group</label>
                                         <select name="blood_id" id="blood_id" class="form-control select2">
                                             <option disabled selected>--Blood Group--</option>
-                                            @foreach ($bloods as $blood)
+                                            {{-- @foreach ($bloods as $blood)
                                                 <option {{ Auth::user()->blood->id == $blood->id ? 'selected' : '' }}
                                                     value="{{ $blood->id }}">{{ $blood->name }}
                                                 </option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                     </div>
                                     <div class="form-group col-sm-4">
@@ -161,7 +161,7 @@
                                         <input type="email" name="email" id="email" class="form-control"
                                             value="{{ Auth::user()->email }}" placeholder="Enter email">
                                     </div>
-                                    <div class="col-sm-10 p-4">
+                                    <div class="p-4 col-sm-10">
                                         <input type="checkbox" class="form-check-input" name="changePassword" value="1"
                                             id="changePassword" />
                                         <label class="form-check-label" for="changePassword">Change Password</label>
@@ -270,38 +270,38 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-sm-4 pl-5 pt-2">
+                                        <div class="pt-2 pl-5 col-sm-4">
                                             <input type="checkbox" class="form-check-input" name="card_header"
                                                 value="1" id="card_header"
                                                 @if (Auth::user()->settings['card_header'] == 1) {{ 'checked' }} @endif />
                                             <label class="form-check-label" for="card_header">Page Card Header (Show)</label>
                                         </div>
-                                        <div class="col-sm-4 pl-5 pt-2">
+                                        <div class="pt-2 pl-5 col-sm-4">
                                             <input type="checkbox" class="form-check-input" name="card_footer"
                                                 value="1" id="card_footer"
                                                 @if (Auth::user()->settings['card_footer'] == 1) {{ 'checked' }} @endif />
                                             <label class="form-check-label" for="card_footer">Page Card Footer (Show)</label>
                                         </div>
-                                        <div class="col-sm-4 pl-5 pt-2">
+                                        <div class="pt-2 pl-5 col-sm-4">
                                             <input type="checkbox" class="form-check-input" name="sidebar_collapse"
                                                 value="1" id="sidebar_collapse"
                                                 @if (Auth::user()->settings['sidebar_collapse'] == 1) {{ 'checked' }} @endif />
                                             <label class="form-check-label" for="sidebar_collapse">Sidebar Collapse
                                                 (Enable)</label>
                                         </div>
-                                        <div class="col-sm-4 pl-5 pt-2">
+                                        <div class="pt-2 pl-5 col-sm-4">
                                             <input type="checkbox" class="form-check-input" name="dark_mode" value="1"
                                                 id="dark_mode" @if (Auth::user()->settings['dark_mode'] == 1) {{ 'checked' }} @endif />
                                             <label class="form-check-label" for="dark_mode">Dark Mode (Enable)</label>
                                         </div>
-                                        <div class="col-sm-4 pl-5 pt-2">
+                                        <div class="pt-2 pl-5 col-sm-4">
                                             <input type="checkbox" class="form-check-input" name="default_status"
                                                 value="1" id="default_status"
                                                 @if (Auth::user()->settings['default_status'] == 1) {{ 'checked' }} @endif />
                                             <label class="form-check-label" for="default_status">Default Status
                                                 (Active)</label>
                                         </div>
-                                        <div class="col-sm-4 pl-5 pt-2">
+                                        <div class="pt-2 pl-5 col-sm-4">
                                             <input type="checkbox" class="form-check-input" name="default_time_zone"
                                                 value="1" id="default_time_zone"
                                                 @if (Auth::user()->settings['default_time_zone'] == 1) {{ 'checked' }} @endif />
@@ -312,7 +312,7 @@
                                         <br>
                                         <br>
                                         <br>
-                                        <div class="col-sm-8 pl-4 pt-2">
+                                        <div class="pt-2 pl-4 col-sm-8">
                                             <div class="row">
                                                 <div class="col-sm-3">
                                                     <label for="permission_view" class="required col-form-label ">Permission
@@ -347,10 +347,10 @@
 
                         <div class="">
                             @can('User Profile Update')
-                                <button type="submit" class="btn btn-primary float-right ml-1">Update</button>
+                                <button type="submit" class="float-right ml-1 btn btn-primary">Update</button>
                             @endcan
                             <a type="button" href="{{ route('back-end.dashboard') }}"
-                                class="btn btn-warning float-right ml-1">Back</a>
+                                class="float-right ml-1 btn btn-warning">Back</a>
                         </div>
                         <!-- /.card-footer -->
                     </form>
@@ -370,13 +370,13 @@
 
 
 
-    <x-script.password-and-username-copy-to-clipboard />
-    <x-script.password-generate />
+    <x-back-end.script.password-and-username-copy-to-clipboard />
+    <x-back-end.script.password-generate />
 
-    <x-message.message />
+    <x-back-end.message.message />
 
-    <x-links.footer-link-jquery-validation />
-    <x-links.footer-link-select-two />
+    <x-back-end.plugins.jquery-validation-footer />
+    <x-back-end.plugins.select-two-footer />
 
 
 

@@ -57,37 +57,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="reply-area">
-                        <h3>LEAVE A REPLY</h3>
-                        <p>I must explain to you how all this a mistaken idea of ncing great explorer of the
-                            rut<br>
-                            the is lder of human happinescias unde omnis iste natus error sit volptatem </p>
-                        <form id="contact-form" action="mail.php" method="post">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p>Name</p>
-                                    <input type="text" name="name" id="name">
-                                </div>
-                                <div class="col-md-12">
-                                    <p>Email</p>
-                                    <input type="text" name="email" id="email">
-                                </div>
-                                <div class="col-md-12">
-                                    <p>Subject</p>
-                                    <input type="text" name="subject" id="subject">
-                                    <p>Massage</p>
-                                    <textarea name="message" id="message" cols="15" rows="10"></textarea>
-                                </div>
-                            </div>
-                            <a class="reply-btn" href="#" data-text="send"><span>send message</span></a>
-                            <p class="form-messege"></p>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <x-front-end.course-registration />
         </div>
     </div>
     <!-- Blog End -->
+@endsection
+
+
+@section('footer-links')
+    <x-back-end.script.dependent-dropdown-zip-code />
 @endsection

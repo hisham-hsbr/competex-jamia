@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Image;
 use App\Models\Fixancare\MobileService;
+use Illuminate\Support\Facades\DB;
 
 class FrontendDashboardController extends Controller
 {
@@ -61,12 +62,16 @@ class FrontendDashboardController extends Controller
     public function courseRegistration($id)
     {
         $course = Course::find(decrypt($id));
+        $country_list = DB::table('addreheadNamesses')
+            ->groupBy('country')
+            ->where('status', 1)->get();
         return view('front_end.course-registration')->with(
             [
-                // 'headName' => $this->headName,
+                // '' => $this->headName,
                 // 'routeName' => $this->routeName,
                 // 'permissionName' => $this->permissionName,
                 'course' => $course,
+                'country_list' => $country_list,
             ]
         );
     }

@@ -301,12 +301,12 @@ class UserController extends Controller
 
     public function profileEdit()
     {
-        $bloods = Blood::where('status', 1)->get();
         $time_zones = TimeZone::where('status', 1)->get();
+        $headName = 'dd';
         $country_list = DB::table('addresses')
             ->groupBy('country')
             ->where('status', 1)->get();
-        return view('back_end.users_management.users.profile', compact('bloods', 'time_zones', 'country_list'));
+        return view('back_end.users_management.users.profile', compact('time_zones', 'country_list', 'headName'));
     }
 
     public function profileUpdate(Request $request)
