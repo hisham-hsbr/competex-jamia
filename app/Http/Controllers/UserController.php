@@ -200,8 +200,18 @@ class UserController extends Controller
         $users = User::all();
         $permissions = Permission::all()->groupBy('parent');
 
-
-        return view('back_end.users_management.users.create', compact('roles', 'permissions', 'users', 'time_zones', 'country_list'));
+        return view('back_end.users_management.users.create')->with(
+            [
+                'roles' => $roles,
+                'users' => $users,
+                'time_zones' => $time_zones,
+                'permissions' => $permissions,
+                'country_list' => $country_list,
+                'headName' => $this->headName,
+                'routeName' => $this->routeName,
+                'permissionName' => $this->permissionName,
+            ]
+        );
     }
     function csdcsGet(Request $request)
     {

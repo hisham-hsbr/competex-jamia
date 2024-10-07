@@ -10,8 +10,8 @@
 @endsection
 
 @section('headLinks')
-    <x-links.header-links-select-two />
-    <x-links.header-link-dual-list-box />
+    <x-back-end.plugins.select-two-head />
+    <x-back-end.plugins.dual-list-box-head />
 @endsection
 
 @section('actionTitle', 'User Create')
@@ -20,8 +20,9 @@
 
         <div class="row">
             <div class="col-10">
-                <x-form.button button_type="" button_oneclick="copyToClipboard()" button_class="btn btn-success btn-xs"
-                    button_icon="fa fa-clipboard" button_name=" Copy User Name & Password" />
+                <x-back-end.form.button button_type="" button_oneclick="copyToClipboard()"
+                    button_class="btn btn-success btn-xs" button_icon="fa fa-clipboard"
+                    button_name=" Copy User Name & Password" />
             </div>
             <div class="col-md-1">
 
@@ -35,27 +36,27 @@
                         <div class="card-body">
                             <!-- /.card-header -->
                             <div class="row">
-                                <x-form.form-group-label-input div_class="col-sm-4" label_for="name"
+                                <x-back-end.form.form-group-label-input div_class="col-sm-4" label_for="name"
                                     lable_class="required col-form-label" label_name="First Name" input_type="text"
                                     input_name="name" input_id="name" input_style="" input_class=""
                                     input_value="{{ old('name') }}" input_placeholder="First Name" />
 
-                                <x-form.form-group-label-input div_class="col-sm-4" label_for="last_name"
+                                <x-back-end.form.form-group-label-input div_class="col-sm-4" label_for="last_name"
                                     lable_class="required col-form-label" label_name="Last Name" input_type="text"
                                     input_name="last_name" input_id="last_name" input_style="" input_class=""
                                     input_value="{{ old('last_name') }}" input_placeholder="Last Name" />
 
-                                <x-form.form-group-label-input div_class="col-sm-4" label_for="dob"
+                                <x-back-end.form.form-group-label-input div_class="col-sm-4" label_for="dob"
                                     lable_class="required col-form-label" label_name="Date Of Birth" input_type="date"
                                     input_name="dob" input_id="dob" input_style="" input_class=""
                                     input_value="{{ old('dob') }}" input_placeholder="Date Of Birth" />
 
-                                <x-form.form-group-label-input div_class="col-sm-4" label_for="phone1"
+                                <x-back-end.form.form-group-label-input div_class="col-sm-4" label_for="phone1"
                                     lable_class="required col-form-label" label_name="Phone Number 1" input_type="number"
                                     input_name="phone1" input_id="phone1" input_style="" input_class=""
                                     input_value="{{ old('phone1') }}" input_placeholder="Phone Number 1" />
 
-                                <x-form.form-group-label-input div_class="col-sm-4" label_for="phone2"
+                                <x-back-end.form.form-group-label-input div_class="col-sm-4" label_for="phone2"
                                     lable_class="required col-form-label" label_name="Phone Number 2" input_type="number"
                                     input_name="phone2" input_id="phone2" input_style="" input_class=""
                                     input_value="{{ old('phone2') }}" input_placeholder="Phone Number 2" />
@@ -67,12 +68,12 @@
                                         Group</label>
                                     <select name="blood_id" id="blood_id" class="form-control select2">
                                         <option disabled selected>--Blood Group--</option>
-                                        @foreach ($bloods as $blood)
+                                        {{-- @foreach ($bloods as $blood)
                                             <option {{ old('blood_id') == $blood->id ? 'selected' : '' }}
                                                 value="{{ $blood->id }}">
                                                 {{ $blood->name }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-4">
@@ -118,7 +119,7 @@
 
                                         <div class="form-group col-sm-4">
                                             <label for="password" class="required col-form-label">Password</label>
-                                            <x-form.button button_type="button" button_oneclick="generate()"
+                                            <x-back-end.form.button button_type="button" button_oneclick="generate()"
                                                 button_class="btn btn-warning btn-xs generate-password"
                                                 button_icon="fa fa-plus" button_name="Generate" />
                                             <input type="password" name="password" id="password" class="form-control"
@@ -235,7 +236,7 @@
                             </div>
                             <!-- /.row -->
 
-                            <div class="col-sm-10 pl-5 pt-2">
+                            <div class="pt-2 pl-5 col-sm-10">
                                 <input type="checkbox" class="form-check-input" name="status" value="1"
                                     id="status" @if (Auth::user()->settings['default_status'] == 1) {{ 'checked' }} @endif />
                                 <label class="form-check-label" for="status">Active</label>
@@ -244,10 +245,10 @@
                         <!-- /.card-body -->
                         <div class="">
                             @can('User Create')
-                                <button type="submit" class="btn btn-primary float-right ml-1">Save</button>
+                                <button type="submit" class="float-right ml-1 btn btn-primary">Save</button>
                             @endcan
                             <a type="button" href="{{ route('users.index') }}"
-                                class="btn btn-warning float-right ml-1">Back</a>
+                                class="float-right ml-1 btn btn-warning">Back</a>
                         </div>
                         <!-- /.card-footer -->
                     </form>
@@ -259,10 +260,11 @@
         </div>
         <div class="row">
 
-            <div class="col-10 mt-3">
+            <div class="mt-3 col-10">
                 <br>
-                <x-form.button button_type="" button_oneclick="copyToClipboard()" button_class="btn btn-success btn-xs"
-                    button_icon="fa fa-clipboard" button_name="   Copy User Name & Password" />
+                <x-back-end.form.button button_type="" button_oneclick="copyToClipboard()"
+                    button_class="btn btn-success btn-xs" button_icon="fa fa-clipboard"
+                    button_name="   Copy User Name & Password" />
             </div>
         </div>
 
@@ -274,16 +276,16 @@
 @section('actionFooter', 'Footer')
 @section('footerLinks')
 
-    <x-message.message />
+    <x-back-end.message.message />
 
-    <x-links.footer-link-select-two />
+    <x-back-end.plugins.select-two-footer />
 
-    <x-links.footer-link-jquery-validation />
-    <x-validation.user-jquery-validation />
+    <x-back-end.plugins.jquery-validation-footer />
+    <x-back-end.validation.user-jquery-validation />
 
-    <x-script.password-and-username-copy-to-clipboard />
-    <x-script.password-generate />
-    <x-script.dual-list-box />
-    <x-script.dependent-dropdown-zip-code />
+    <x-back-end.script.password-and-username-copy-to-clipboard />
+    <x-back-end.script.password-generate />
+    <x-back-end.script.dual-list-box />
+    <x-back-end.script.dependent-dropdown-zip-code />
 
 @endsection

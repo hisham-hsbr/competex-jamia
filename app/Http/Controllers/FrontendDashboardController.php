@@ -62,7 +62,7 @@ class FrontendDashboardController extends Controller
     public function courseRegistration($id)
     {
         $course = Course::find(decrypt($id));
-        $country_list = DB::table('addreheadNamesses')
+        $country_list = DB::table('addresses')
             ->groupBy('country')
             ->where('status', 1)->get();
         return view('front_end.course-registration')->with(
@@ -74,5 +74,20 @@ class FrontendDashboardController extends Controller
                 'country_list' => $country_list,
             ]
         );
+    }
+    function csdcsGet(Request $request)
+    {
+        $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $data = DB::table('addresses')
+            ->where($select, $value)
+            ->groupBy($dependent)
+            ->get();
+        $output = '<option value="">Select ' . ucfirst($dependent) . '</option>';
+        foreach ($data as $row) {
+            $output .= '<option value="' . $row->$dependent . '">' . $row->$dependent . '</option>';
+        }
+        echo $output;
     }
 }
