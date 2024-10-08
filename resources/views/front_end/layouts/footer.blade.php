@@ -34,7 +34,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 pt-4 pt-lg-0">
+                <div class="pt-4 col-lg-2 col-md-6 pt-lg-0">
                     <div class="single-widget">
                         <h3>useful links</h3>
                         <ul>
@@ -46,7 +46,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 pt-4 pt-lg-0">
+                <div class="pt-4 col-lg-3 col-md-6 pt-lg-0">
                     <div class="single-widget">
                         <h3>get in touch</h3>
                         <p>Your address goes here, Street<br>City, Roadno 785 New York</p>
@@ -57,7 +57,7 @@
             </div>
         </div>
     </div>
-    <div class="footer-bottom text-center">
+    <div class="text-center footer-bottom">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -81,6 +81,8 @@
 <script src="{{ asset('front_end_links/eduhome/js/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ asset('front_end_links/eduhome/js/plugins.js') }}"></script>
 <script src="{{ asset('front_end_links/eduhome/js/main.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('back_end_links/adminLinks/plugins/toastr/toastr.min.js') }}"></script>
 
 @section('footer-links')
 @show

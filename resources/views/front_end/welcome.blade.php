@@ -31,3 +31,6 @@
     @include('front_end.layouts.sections.subscribe')
     <!-- Subscribe End -->
 @endsection
+@section('footer-links')
+    <x-back-end.message.message />
+@endsection
