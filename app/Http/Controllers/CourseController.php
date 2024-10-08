@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Competex\Course;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
@@ -52,62 +51,61 @@ class CourseController extends Controller
         $courses = Course::all();
         return Datatables::of($courses)
 
-        ->setRowId(function ($course) {
-            return $course->id;
+            ->setRowId(function ($course) {
+                return $course->id;
             })
 
             ->editColumn('status', function (Course $course) {
 
-                $active='<span style="background-color: #04AA6D;color: white;padding: 3px;width:100px;">Active</span>';
-                $inActive='<span style="background-color: #ff9800;color: white;padding: 3px;width:100px;">In Active</span>';
+                $active = '<span style="background-color: #04AA6D;color: white;padding: 3px;width:100px;">Active</span>';
+                $inActive = '<span style="background-color: #ff9800;color: white;padding: 3px;width:100px;">In Active</span>';
 
                 $activeId = ($course->status);
 
-                    if($activeId==1){
-                        $activeId = $active;
-                    }
-                    else {
-                        $activeId = $inActive;
-                    }
-                    return $activeId;
+                if ($activeId == 1) {
+                    $activeId = $active;
+                } else {
+                    $activeId = $inActive;
+                }
+                return $activeId;
             })
 
 
-        ->editColumn('created_by', function (Course $course) {
+            ->editColumn('created_by', function (Course $course) {
 
-            return ucwords($course->CreatedBy->name);
-        })
+                return ucwords($course->CreatedBy->name);
+            })
 
 
-        ->editColumn('updated_by', function (Course $course) {
+            ->editColumn('updated_by', function (Course $course) {
 
-            return ucwords($course->UpdatedBy->name);
-        })
-        ->addColumn('created_at', function (Course $course) {
-            return $course->created_at->format('d-M-Y h:m');
-        })
-        ->addColumn('updated_at', function (Course $course) {
+                return ucwords($course->UpdatedBy->name);
+            })
+            ->addColumn('created_at', function (Course $course) {
+                return $course->created_at->format('d-M-Y h:m');
+            })
+            ->addColumn('updated_at', function (Course $course) {
 
-            return $course->updated_at->format('d-M-Y h:m');
-        })
+                return $course->updated_at->format('d-M-Y h:m');
+            })
 
-        ->addColumn('editLink', function (Course $course) {
+            ->addColumn('editLink', function (Course $course) {
 
-            $editLink ='<a href="'. route('Courses.edit', $course->id) .'" class="ml-2"><i class="fa-solid fa-edit"></i></a>';
-               return $editLink;
-        })
-        ->addColumn('deleteLink', function (Course $course) {
-           $CSRFToken = "csrf_field()";
-            $deleteLink ='
-                        <button class="btn btn-link delete-course" data-course_id="'.$course->id.'" type="submit"><i
+                $editLink = '<a href="' . route('Courses.edit', $course->id) . '" class="ml-2"><i class="fa-solid fa-edit"></i></a>';
+                return $editLink;
+            })
+            ->addColumn('deleteLink', function (Course $course) {
+                $CSRFToken = "csrf_field()";
+                $deleteLink = '
+                        <button class="btn btn-link delete-course" data-course_id="' . $course->id . '" type="submit"><i
                                 class="fa-solid fa-trash-can text-danger"></i>
                         </button>';
-               return $deleteLink;
-        })
+                return $deleteLink;
+            })
 
 
-       ->rawColumns(['status','editLink','deleteLink'])
-        ->toJson();
+            ->rawColumns(['status', 'editLink', 'deleteLink'])
+            ->toJson();
     }
 
     /**
@@ -136,10 +134,9 @@ class CourseController extends Controller
         $course->name = $request->name;
 
 
-        if ($request->status==0)
-            {
-                $course->status==0;
-            }
+        if ($request->status == 0) {
+            $course->status == 0;
+        }
 
         $course->status = $request->status;
 
@@ -164,7 +161,7 @@ class CourseController extends Controller
 
         return view('back_end.test.demos.show')->with(
             [
-                'testDemo' => $testDemo
+                'course' => $course,
             ]
         );
     }
@@ -178,7 +175,7 @@ class CourseController extends Controller
 
         return view('back_end.test.demos.edit')->with(
             [
-                'testDemo' => $testDemo
+                'course' => $course
             ]
         );
     }
@@ -186,7 +183,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -199,10 +196,9 @@ class CourseController extends Controller
         $course->name = $request->name;
 
 
-        if ($request->status==0)
-            {
-                $course->status==0;
-            }
+        if ($request->status == 0) {
+            $course->status == 0;
+        }
 
         $course->status = $request->status;
 
@@ -220,7 +216,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy($id)
+    public function destroy($id)
     {
         $course  = Course::findOrFail($id);
         $course->delete();

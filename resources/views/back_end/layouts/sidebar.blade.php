@@ -2,14 +2,14 @@
 <a href="/" class="brand-link">
     <!-- sidebar_mini_logo -->
     @if ($settings['logo_sidebar_mini'] == 1)
-        <x-app.application-logo-mini width="27" />
+        {{-- <x-app.application-logo-mini width="27" /> --}}
     @endif
     <div style="padding-left: 20px">
 
     </div>
     <!-- sidebar_logo -->
     @if ($settings['logo_sidebar'] == 1)
-        <x-app.application-logo-dark width="112" />
+        <x-app.application-logo-dark width="135" />
     @endif
     <!-- <span class="brand-text font-weight-light"> {{ $settings['app_name'] }}</span> -->
 </a>
@@ -59,7 +59,7 @@
                     active="{{ request()->is('admin/profile') ? 'active' : '' }}" menu_icon="fa fa-user" drop_icon="" />
             @endcan <!-- profile Menu End -->
 
-            <x-back-end.sidebar-section.developer />
+            {{-- <x-back-end.sidebar-section.developer /> --}}
             <x-back-end.sidebar-section.admin />
             <x-back-end.sidebar-section.user-management />
 
