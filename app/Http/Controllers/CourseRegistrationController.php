@@ -9,13 +9,21 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Models\Activity;
+
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CourseRegisterUpdatesNotification;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CourseRegistrationController extends Controller
 {
-    private $headName = 'Test Demo';
-    private $routeName = 'test-demos';
-    private $permissionName = 'Test Demo';
-    private $snakeName = 'test_demo';
+
+    private $headName = 'Course Registration';
+    private $routeName = 'course-registrations';
+    private $permissionName = 'Course Registration';
+    private $snakeName = 'course_registration';
+    private $camelCase = 'courseRegistration';
 
     public function __construct()
     {
@@ -34,13 +42,34 @@ class CourseRegistrationController extends Controller
         $createdByUsers = $courseRegistrations->sortBy('createdBy')->pluck('createdBy')->unique();
         $updatedByUsers = $courseRegistrations->sortBy('updatedBy')->pluck('updatedBy')->unique();
 
-        return view('back_end.test.demos.index')->with(
+
+
+
+        $defaultCount = CourseRegistration::withTrashed()->where('default', 1)->count();
+
+        $message_error = null; // Initialize the message variable
+
+        if ($defaultCount > 1) {
+            $message_error = "Default Count is more than " . $defaultCount;
+            session()->flash('message_error', $message_error);
+        }
+
+        if ($defaultCount == 0) {
+            $message_error = "Please set a Default value";
+            session()->flash('message_error', $message_error);
+        }
+
+
+        return view('back_end.competex.course_registrations.index')->with(
             [
                 'headName' => $this->headName,
                 'routeName' => $this->routeName,
+                'permissionName' => $this->permissionName,
                 'courseRegistrations' => $courseRegistrations,
+                'defaultCount' => $defaultCount,
                 'createdByUsers' => $createdByUsers,
                 'updatedByUsers' => $updatedByUsers,
+                'message_error' => $message_error,
             ]
         );
     }
@@ -48,63 +77,62 @@ class CourseRegistrationController extends Controller
     public function courseRegistrationsGet()
     {
 
-        $courseRegistrations = CourseRegistration::all();
-        return Datatables::of($courseRegistrations)
 
-            ->setRowId(function ($courseRegistration) {
+        $defaultCount = CourseRegistration::withTrashed()->where('default', 1)->count();
+        $courseRegistrations = CourseRegistration::withTrashed()->get();
+
+
+        return Datatables::of(source: $courseRegistrations)
+            ->setRowId(function ($courseRegistration): mixed {
                 return $courseRegistration->id;
             })
 
-            ->editColumn('status', function (CourseRegistration $courseRegistration) {
+            // Add row class based on condition
+            ->setRowClass(function ($courseRegistration) use ($defaultCount) {
+                return ($defaultCount > 1 && $courseRegistration->default == 1) ? 'text-danger' : '';
+            })
 
-                $active = '<span style="background-color: #04AA6D;color: white;padding: 3px;width:100px;">Active</span>';
-                $inActive = '<span style="background-color: #ff9800;color: white;padding: 3px;width:100px;">In Active</span>';
+            ->editColumn('cityName', function (CourseRegistration $courseRegistration) {
 
-                $activeId = ($courseRegistration->status);
+                return ucwords(string: $courseRegistration->cityName->city);
+            })
+            ->editColumn('courseName', function (CourseRegistration $courseRegistration) {
 
-                if ($activeId == 1) {
-                    $activeId = $active;
-                } else {
-                    $activeId = $inActive;
+                return ucwords(string: $courseRegistration->courseName->name);
+            })
+
+            ->addColumn('action', content: function (CourseRegistration $courseRegistration) {
+
+                $action = '
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info">Action</button>
+                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown"></button>
+                        <div class="dropdown-menu" role="menu">
+                            <a href="' . route('course-registrations.show', encrypt($courseRegistration->id)) . '" class="ml-2" title="View Details"><i class="fa-solid fa fa-eye text-success"></i></a>
+                            <a href="' . route('course-registrations.pdf', encrypt($courseRegistration->id)) . '" class="ml-2" title="View PDF"><i class="fa-solid fa-file-pdf"></i></a>
+                            <a href="' . route('course-registrations.edit', encrypt($courseRegistration->id)) . '" class="ml-2" title="Edit"><i class="fa-solid fa-edit text-warning"></i></a>';
+                if ($courseRegistration->deleted_at == null) {
+                    $action .= '
+                    <button class="mb-1 btn btn-link delete-item_delete" data-item_delete_id="' . encrypt($courseRegistration->id) . '" data-value="' . $courseRegistration->name . '" data-default="' . $courseRegistration->default . '" type="submit" title="Soft Delete"><i class="fa-solid fa-eraser text-danger"></i></button>';
                 }
-                return $activeId;
+
+                $action .= '
+                            <button class="mb-1 btn btn-link delete-item_delete_force" data-item_delete_force_id="' . encrypt($courseRegistration->id) . '" data-value="' . $courseRegistration->name . '" data-default="' . $courseRegistration->default . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" type="submit" title="Hard Delete"><i class="fa-solid fa-trash-can text-danger"></i></button>';
+
+                if ($courseRegistration->deleted_at) {
+                    $action .= '<a href="' . route('course-registrations.restore', encrypt($courseRegistration->id)) . '" class="" title="Restore"><i class="fa-solid fa-trash-arrow-up"></i></a>';
+                }
+
+                $action .= '
+                        </div>
+                    </div>
+                ';
+
+                return $action;
             })
 
 
-            ->editColumn('created_by', function (CourseRegistration $courseRegistration) {
-
-                return ucwords($courseRegistration->CreatedBy->name);
-            })
-
-
-            ->editColumn('updated_by', function (CourseRegistration $courseRegistration) {
-
-                return ucwords($courseRegistration->UpdatedBy->name);
-            })
-            ->addColumn('created_at', function (CourseRegistration $courseRegistration) {
-                return $courseRegistration->created_at->format('d-M-Y h:m');
-            })
-            ->addColumn('updated_at', function (CourseRegistration $courseRegistration) {
-
-                return $courseRegistration->updated_at->format('d-M-Y h:m');
-            })
-
-            ->addColumn('editLink', function (CourseRegistration $courseRegistration) {
-
-                $editLink = '<a href="' . route('CourseRegistrations.edit', $courseRegistration->id) . '" class="ml-2"><i class="fa-solid fa-edit"></i></a>';
-                return $editLink;
-            })
-            ->addColumn('deleteLink', function (CourseRegistration $courseRegistration) {
-                $CSRFToken = "csrf_field()";
-                $deleteLink = '
-                        <button class="btn btn-link delete-courseRegistration" data-courseRegistration_id="' . $courseRegistration->id . '" type="submit"><i
-                                class="fa-solid fa-trash-can text-danger"></i>
-                        </button>';
-                return $deleteLink;
-            })
-
-
-            ->rawColumns(['status', 'editLink', 'deleteLink'])
+            ->rawColumns(['action', 'status_with_icon'])
             ->toJson();
     }
 
@@ -155,13 +183,24 @@ class CourseRegistrationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CourseRegistration $courseRegistration)
+    public function show($courseRegistration)
     {
-        $courseRegistration = CourseRegistration::find($courseRegistration);
 
-        return view('back_end.test.demos.show')->with(
+
+        $courseRegistration = CourseRegistration::withTrashed()->find(decrypt($courseRegistration));
+        $activityLog = Activity::where('subject_id', $courseRegistration->id)
+            ->where('subject_type', 'App\Models\TestDemo')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('back_end.competex.course_registrations.show')->with(
             [
-                'testDemo' => $testDemo
+                'courseRegistration' => $courseRegistration,
+                'activityLog' => $activityLog,
+                'camelCase' => $this->camelCase,
+                'headName' => $this->headName,
+                'routeName' => $this->routeName,
+                'permissionName' => $this->permissionName,
             ]
         );
     }
@@ -169,13 +208,17 @@ class CourseRegistrationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CourseRegistration $courseRegistration)
+    public function edit($courseRegistration)
     {
-        $courseRegistration = CourseRegistration::find($courseRegistration);
+        $courseRegistration = CourseRegistration::withTrashed()->find(decrypt($courseRegistration));
 
-        return view('back_end.test.demos.edit')->with(
+        return view('back_end.competex.course_registrations.edit')->with(
             [
-                'testDemo' => $testDemo
+                'courseRegistration' => $courseRegistration,
+                'camelCase' => $this->camelCase,
+                'headName' => $this->headName,
+                'routeName' => $this->routeName,
+                'permissionName' => $this->permissionName,
             ]
         );
     }
@@ -185,28 +228,30 @@ class CourseRegistrationController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $id = decrypt(value: $id);
         $this->validate($request, [
-            'name' => 'required',
-            'code' => "required|unique:courseRegistrations,code,$id",
+            'application_status' => 'required',
+            'application_update' => 'required',
         ]);
-        $courseRegistration = CourseRegistration::find($id);
+        $courseRegister = CourseRegistration::withTrashed()->find($id);
 
 
-        $courseRegistration->code  = $request->code;
-        $courseRegistration->name = $request->name;
+        $data = [
+            'application_status' => $request->application_status,
+            'application_update' => $request->application_update,
+            'updated_by' => Auth::user()->id,
+        ];
 
+        $courseRegister->update($data);
 
-        if ($request->status == 0) {
-            $courseRegistration->status == 0;
-        }
+        $email = $courseRegister->email;
 
-        $courseRegistration->status = $request->status;
+        // start for sending specific mail
+        Notification::route('mail', $email)
+            ->notify(notification: new CourseRegisterUpdatesNotification($courseRegister));
 
-        $courseRegistration->updated_by = Auth::user()->id;
-
-        $courseRegistration->save();
-
-        return redirect()->route('courseRegistrations.index')->with(
+        return redirect()->route('course-registrations.index')->with(
             [
                 'message_store' => 'CourseRegistration Updated Successfully'
             ]
@@ -226,5 +271,27 @@ class CourseRegistrationController extends Controller
                 'message_update' => 'CourseRegistration Updated Successfully'
             ]
         );
+    }
+    public function courseRegistrationsPDF($courseRegistration)
+    {
+        $courseRegistration = CourseRegistration::withTrashed()->find(decrypt(value: $courseRegistration));
+        $activityLog = Activity::where('subject_id', $courseRegistration->id)
+            ->where('subject_type', 'App\Models\TestDemo')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $data = [
+            'courseRegistration' => $courseRegistration,
+            'activityLog' => $activityLog,
+            'camelCase' => $this->camelCase,
+            'headName' => $this->headName,
+            'routeName' => $this->routeName,
+            'permissionName' => $this->permissionName,
+        ];
+        $pdf_name = 'Application Number COA-' . $courseRegistration->application_number;
+        // return view('back_end.fixancare.services.generate_pdf.blade',compact('services','products','job_types','job_statuses','work_statuses','complaints'));
+
+        $pdf = Pdf::loadView('back_end.competex.course_registrations.generate_pdf', data: $data)->setPaper('a4', 'portrait')->setWarnings(false);
+        return $pdf->download($pdf_name . '.pdf');
     }
 }

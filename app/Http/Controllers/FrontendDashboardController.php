@@ -11,6 +11,10 @@ use App\Models\Image;
 use App\Models\Fixancare\MobileService;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CourseRegistrationNotification;
+use Carbon\Carbon;
+
 class FrontendDashboardController extends Controller
 {
     // public function __construct()
@@ -18,37 +22,7 @@ class FrontendDashboardController extends Controller
     //     $this->middleware('auth');
 
     // }
-    public function trackSearchJob()
-    {
 
-        $track_test = $_GET['job_number'];
-
-        $job_numbers = MobileService::where('job_number', 'LIKE', $track_test)->get();
-        if ($track_test == "") {
-
-            return view('front_end.tr');
-        } else {
-            return view('front_end.track', compact('job_numbers'));
-        }
-    }
-    public function trackSearchPhone()
-    {
-
-        $track_test = $_GET['phone_number'];
-
-        $phone_numbers = MobileService::where('contact_number', 'LIKE', $track_test)->get();
-        if ($track_test == "") {
-
-            return view('front_end.tr');
-        } else {
-            return view('front_end.track', compact('phone_numbers'));
-        }
-    }
-    public function portfolioDetails($id)
-    {
-        $image = Image::find($id);
-        return view('front_end.portfolio-details', compact('image'));
-    }
     public function index()
     {
         $courses = Course::all();
@@ -64,14 +38,14 @@ class FrontendDashboardController extends Controller
     public function courseRegistration($id)
     {
         $course = Course::find(decrypt($id));
+        $application_number =  CourseRegistration::max(column: 'application_number') + 1;
+
         $countryList = Address::pluck('country');
         return view('front_end.course-registration')->with(
             [
-                // '' => $this->headName,
-                // 'routeName' => $this->routeName,
-                // 'permissionName' => $this->permissionName,
                 'course' => $course,
                 'countryList' => $countryList,
+                'application_number' => $application_number,
             ]
         );
     }
@@ -89,9 +63,11 @@ class FrontendDashboardController extends Controller
 
             'email' => 'required|email|unique:course_registrations,email',
         ]);
+        $application_number =  CourseRegistration::max(column: 'application_number') + 1;
         $courseRegister = new CourseRegistration();
         $city_id = (DB::table('addresses')->where('city', $request->city)->first())->id;
         // dd($request->all());
+        $courseRegister->application_number = $application_number;
         $courseRegister->name = $request->name;
         $courseRegister->last_name = $request->last_name;
         $courseRegister->dob  = $request->dob;
@@ -109,6 +85,22 @@ class FrontendDashboardController extends Controller
         // $courseRegister->updated_by = Auth::user()->id;
 
         $courseRegister->save();
+
+
+        $email = $courseRegister->email;
+        $users = User::find(2);
+
+        // Define the delay
+        $when = Carbon::now()->addSeconds(10);
+
+        // Send the notification with a delay
+        // Notification::send($users, (new CourseRegistrationNotification($courseRegister))->delay($when));
+
+        // start for sending specific mail
+        Notification::route('mail', $email)
+            ->notify(notification: new CourseRegistrationNotification($courseRegister));
+        // end for sending specific mail
+
         return redirect()->route('front-end.index')->with(
             [
                 // '' => $this->headName,

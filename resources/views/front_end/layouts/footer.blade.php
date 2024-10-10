@@ -61,8 +61,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <p>Copyright © <a href="index.html">Eduhome</a> 2022. All Right Reserved By <a
-                            href="https://themeforest.net/user/hastech/portfolio" target="_blank">Hastech.</a></p>
+                    <p>Copyright © <a href="/">Competex</a> 2024. All Right Reserved By <a href="https://hsbr.app"
+                            target="_blank">HSBR Apps</a></p>
                 </div>
             </div>
         </div>

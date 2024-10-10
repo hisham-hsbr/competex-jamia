@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome Email</title>
+    <title>Status Update Email</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
@@ -38,6 +38,14 @@
             color: #333333;
         }
 
+        .status-update {
+            background-color: #e7f3e7;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
         .email-footer {
             background-color: #eaf6ff;
             color: #5a6268;
@@ -67,24 +75,32 @@
             <!-- Header Section with Logo -->
             <div class="text-center email-header">
                 <img src="{{ asset('/storage/images/app/logo_png_2.png') }}" alt="{{ $settings['app_name'] }} Logo" />
-                <h1>Welcome to {{ $settings['app_name'] }}</h1>
+                <h1>Application Status Update</h1>
             </div>
 
             <!-- Content Section -->
             <div class="email-content">
                 <p>Dear {{ $courseRegister->name }} {{ $courseRegister->last_name }},</p>
                 <p>
-                    Thank you for registering for the <strong>{{ $courseRegister->courseName->name }}</strong>! We
-                    are excited to have you on board. Your application has been
-                    successfully submitted, and our team will be reaching out to you
-                    soon with more details.
+                    We hope you're doing well. We wanted to provide an update on your
+                    application for the <strong>{{ $courseRegister->courseName->name }}</strong>.
                 </p>
+
+                <!-- Status Update Section -->
+                <div class="status-update">
+                    <h3>Current Status: {{ $courseRegister->application_status }}</h3>
+                    <p>Status Updated On: <strong>{{ $courseRegister->updated_at }}</strong></p>
+                    <p>Status Updated By: <strong>{{ $courseRegister->updated_by }}</strong></p>
+                    <p>{{ $courseRegister->application_update }}</p>
+                </div>
+
                 <p>
-                    In the meantime, feel free to explore more of our courses and
-                    resources on our website.
+                    Our team is actively working on your application and will notify you
+                    once there are further updates. If you have any questions, feel free
+                    to reach out to us at any time.
                 </p>
                 <div class="text-center">
-                    <a href="https://competex.net" class="btn-primary" target="_blank">Visit Our Website</a>
+                    <a href="https://competex.net" class="btn-primary" target="_blank">Contact Us</a>
                 </div>
             </div>
 

@@ -2,24 +2,23 @@
 
 namespace App\Notifications;
 
+use App\Models\Competex\CourseRegistration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Http\Request;
 
-class JobRegister extends Notification implements ShouldQueue
+class CourseRegistrationNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $notify;
-
+    public $courseRegister;
     /**
      * Create a new notification instance.
      */
-    public function __construct(Request $request)
+    public function __construct(CourseRegistration $courseRegister)
     {
-        $this->notify = $request->name;
+        $this->courseRegister = $courseRegister;
     }
 
     /**
@@ -29,8 +28,7 @@ class JobRegister extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        // return ['mail'];
-        return ['database', 'mail'];
+        return ['mail'];
     }
 
     /**
@@ -38,11 +36,12 @@ class JobRegister extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('TechSo App')
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        return (new MailMessage)->view('back_end.competex.mail.course_register', data: ['courseRegister' => $this->courseRegister]);
+        // return (new MailMessage)
+        //     ->subject('Competex')
+        //     ->line('The introduction to the notification.')
+        //     ->action('Notification Action', url('/'))
+        //     ->line('Thank you for using our application!');
     }
 
     /**
@@ -53,8 +52,7 @@ class JobRegister extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            'data' => $this->notify,
-            'data2' => 'First adsdads',
+            //
         ];
     }
 }

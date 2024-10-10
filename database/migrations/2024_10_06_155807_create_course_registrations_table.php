@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_registrations', function (Blueprint $table) {
             $table->id();
+            $table->string(column: 'application_number')->unique();
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->date('dob')->nullable();
@@ -28,16 +29,19 @@ return new class extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
 
             $table->string('address_detail')->nullable();
+            $table->string('application_status')->nullable();
+            $table->string('application_update')->nullable();
+            $table->boolean('default')->nullable();
             $table->string('description')->nullable();
             $table->string('edit_description')->nullable();
 
             // default
-            // $table->unsignedBigInteger('created_by')->unsigned()->index()->nullable();
-            // $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('created_by')->unsigned()->index()->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
 
-            // $table->unsignedBigInteger('updated_by')->unsigned()->index()->nullable();
-            // $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
-
+            $table->unsignedBigInteger('updated_by')->unsigned()->index()->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

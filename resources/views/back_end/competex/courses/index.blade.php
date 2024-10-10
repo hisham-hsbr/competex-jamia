@@ -112,9 +112,6 @@
                                             @can('{{ $permissionName }} Read Name')
                                                 <th width="20%">Name</th>
                                             @endcan
-                                            @can('{{ $permissionName }} Read Local Name')
-                                                <th width="20%">Local Name</th>
-                                            @endcan
                                             @can('{{ $permissionName }} Read Status')
                                                 <th width="10%">Status</th>
                                             @endcan
@@ -148,9 +145,6 @@
                                             @endcan
                                             @can('{{ $permissionName }} Read Name')
                                                 <th width="20%">Name</th>
-                                            @endcan
-                                            @can('{{ $permissionName }} Read Local Name')
-                                                <th width="20%">Local Name</th>
                                             @endcan
                                             @can('{{ $permissionName }} Read Status')
                                                 <th width="10%">Status</th>
@@ -221,7 +215,7 @@
                                 "X-CSRF-TOKEN": $("input[name='_token']").val()
                             });
 
-                            fetch("{{ route('test-demos.destroy', '') }}/" + itemID, {
+                            fetch("{{ route('courses.destroy', '') }}/" + itemID, {
                                 method: 'DELETE',
                                 headers: myHeaders,
                             }).then(function(response) {
@@ -280,7 +274,7 @@
                             });
 
 
-                            fetch("{{ route('test-demos.force.destroy', '') }}/" +
+                            fetch("{{ route('courses.force.destroy', '') }}/" +
                                 itemID, {
                                     method: 'DELETE',
                                     headers: myHeaders,
@@ -347,7 +341,7 @@
                 processing: true,
                 serverSide: true,
 
-                ajax: '{!! route('test-demos.get') !!}',
+                ajax: '{!! route('courses.get') !!}',
                 // <--- colum serial number order with id
                 "columnDefs": [{
                     searchable: false,
@@ -386,14 +380,6 @@
                         {
                             data: 'name',
                             name: 'name',
-                            width: '100%',
-                            defaultContent: ''
-                        },
-                    @endcan
-                    @can('Job Type Read Local Name')
-                        {
-                            data: 'local_name',
-                            name: 'local_name',
                             width: '100%',
                             defaultContent: ''
                         },

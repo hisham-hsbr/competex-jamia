@@ -5,13 +5,13 @@
 @endsection
 @section('mainContent')
     <!-- Login start -->
-    <div class="login-area pt-150 pb-150">
+    <div class="pt-2 pb-2 login-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
 
                 </div>
-                <div class="col-md-6 col-md-offset-3 text-center">
+                <div class="text-center col-md-6 col-md-offset-3">
                     <div class="login">
                         <div class="login-form-container">
                             <div class="login-text">

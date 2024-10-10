@@ -62,6 +62,7 @@
             {{-- <x-back-end.sidebar-section.developer /> --}}
             <x-back-end.sidebar-section.admin />
             <x-back-end.sidebar-section.user-management />
+            <x-back-end.sidebar-section.competex />
 
 
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string(column: 'how_to_apply')->nullable();
             $table->string(column: 'certification')->nullable();
             $table->text(column: 'course_features')->nullable();
+            $table->boolean('default')->nullable();
             $table->string('description')->nullable();
             $table->string('edit_description')->nullable();
             $table->boolean('status')->nullable();
@@ -29,7 +30,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('updated_by')->unsigned()->index()->nullable();
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }
